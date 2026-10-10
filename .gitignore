@@ -1,0 +1,22 @@
+# Dependencias y compilación
+node_modules
+.next/
+out/
+tsconfig.tsbuildinfo
+
+# Claves y estado local (nunca al repo)
+.env
+.env.*
+!.env.example
+.vercel/
+supabase/.temp/
+.requisitos-mcp.json
+.claude/settings.local.json
+
+# Salidas de scripts
+scripts/out/
+
+# Sistema
+.DS_Store
+Thumbs.db
+*.log

@@ -1,0 +1,179 @@
+{
+  "version": 1,
+  "descripcion": "Requisitos para instalar y operar la plantilla del CRM. Los de tipo cli y mcp tienen que estar conectados en la IA que instala ANTES de empezar (PASO 0). Las claves de base son obligatorias para que el CRM ande; las de integraciones prenden cada módulo. Lo lee scripts/verificar-requisitos.mjs.",
+  "requisitos": [
+    {
+      "id": "git",
+      "nombre": "Git",
+      "tipo": "cli",
+      "obligatorio": true,
+      "verificar": { "comando": "git --version" },
+      "conectar": "Instalá Git desde git-scm.com/downloads (en Windows trae Git Bash).",
+      "modulos": ["Instalación", "Repo privado"]
+    },
+    {
+      "id": "node",
+      "nombre": "Node.js 20 o más",
+      "tipo": "cli",
+      "obligatorio": true,
+      "verificar": { "comando": "node --version", "minimo": 20 },
+      "conectar": "Instalá la versión LTS desde nodejs.org (20 o más). pnpm no hace falta: se usa con npx pnpm.",
+      "modulos": ["Instalación", "Build", "Scripts"]
+    },
+    {
+      "id": "gh",
+      "nombre": "GitHub CLI con sesión",
+      "tipo": "cli",
+      "obligatorio": true,
+      "verificar": { "comando": "gh --version", "sesion": "gh auth status" },
+      "conectar": "Instalá GitHub CLI desde cli.github.com y corré: gh auth login (elegí GitHub.com, HTTPS y el navegador).",
+      "modulos": ["Repo privado de la instalación"]
+    },
+    {
+      "id": "supabase-cli",
+      "nombre": "Supabase CLI con sesión",
+      "tipo": "cli",
+      "obligatorio": true,
+      "alternativa": "mcp-supabase",
+      "verificar": { "comando": "supabase --version", "npx": "supabase", "sesion": "supabase projects list" },
+      "conectar": "No hace falta instalarla: se usa con npx supabase. Iniciá sesión con: npx supabase login (abre el navegador). Alternativa: conectar el conector MCP de Supabase (https://mcp.supabase.com/mcp).",
+      "modulos": ["Base de datos", "Migraciones"]
+    },
+    {
+      "id": "vercel",
+      "nombre": "Vercel CLI con sesión",
+      "tipo": "cli",
+      "obligatorio": true,
+      "verificar": { "comando": "vercel --version", "npx": "vercel", "sesion": "vercel whoami" },
+      "conectar": "No hace falta instalarla: se usa con npx vercel. Iniciá sesión con: npx vercel login.",
+      "modulos": ["Publicación", "Crons"]
+    },
+    {
+      "id": "fathom",
+      "nombre": "Fathom (MCP)",
+      "tipo": "mcp",
+      "obligatorio": true,
+      "url": "https://api.fathom.ai/mcp",
+      "prueba": "Listar reuniones (list_meetings) o ver la identidad (get_identity).",
+      "conectar": "En Claude: Configuración → Conectores → Fathom → Connect. En Claude Code: claude mcp add fathom -- npx mcp-remote@latest https://api.fathom.ai/mcp. En otros clientes: agregá https://api.fathom.ai/mcp como servidor MCP remoto e iniciá sesión.",
+      "modulos": ["Reporte de llamadas", "Cierre de ventas diario", "Resumen de ventas"]
+    },
+    {
+      "id": "google-drive",
+      "nombre": "Google Drive (MCP)",
+      "tipo": "mcp",
+      "obligatorio": true,
+      "url": "https://drivemcp.googleapis.com/mcp/v1",
+      "prueba": "Buscar o listar archivos recientes.",
+      "conectar": "En Claude: Configuración → Conectores → Google Drive → Connect. En otros clientes: servidor remoto https://drivemcp.googleapis.com/mcp/v1 con un cliente OAuth de Google Cloud (guía: developers.google.com/workspace/guides/configure-mcp-servers).",
+      "modulos": ["Planillas y documentos del negocio", "Espejo de Google Sheets"]
+    },
+    {
+      "id": "gmail",
+      "nombre": "Gmail (MCP)",
+      "tipo": "mcp",
+      "obligatorio": true,
+      "url": "https://gmailmcp.googleapis.com/mcp/v1",
+      "prueba": "Listar etiquetas (list_labels).",
+      "conectar": "En Claude: Configuración → Conectores → Gmail → Connect. En otros clientes: servidor remoto https://gmailmcp.googleapis.com/mcp/v1 con un cliente OAuth de Google Cloud (misma guía que Drive).",
+      "modulos": ["Avisos y comunicación del equipo"]
+    },
+    {
+      "id": "google-calendar",
+      "nombre": "Google Calendar (MCP)",
+      "tipo": "mcp",
+      "obligatorio": true,
+      "url": "https://calendarmcp.googleapis.com/mcp/v1",
+      "prueba": "Listar calendarios (list_calendars).",
+      "conectar": "En Claude: Configuración → Conectores → Google Calendar → Connect. En otros clientes: servidor remoto https://calendarmcp.googleapis.com/mcp/v1 con un cliente OAuth de Google Cloud (misma guía que Drive).",
+      "modulos": ["Agenda del equipo", "Preparación de llamadas"]
+    },
+    {
+      "id": "sandcastles",
+      "nombre": "Sandcastles (MCP)",
+      "tipo": "mcp",
+      "obligatorio": true,
+      "url": "https://mcp.sandcastles.ai/",
+      "prueba": "Verificar la conexión o listar los espacios de trabajo.",
+      "conectar": "Necesita un plan Pro o superior de Sandcastles. sandcastles.ai → Settings → Connectors: descargá el conector y agregalo en Claude (o agregá https://mcp.sandcastles.ai/ como servidor MCP remoto en tu cliente) e iniciá sesión.",
+      "modulos": ["Contenido", "Formatos", "Radar (investigación de competencia)"]
+    },
+    {
+      "id": "miro",
+      "nombre": "Miro (MCP)",
+      "tipo": "mcp",
+      "obligatorio": true,
+      "url": "https://mcp.miro.com/",
+      "prueba": "Ver el usuario conectado o buscar tableros.",
+      "conectar": "Agregá https://mcp.miro.com/ como conector o servidor MCP remoto y autorizá con tu cuenta (elegí el equipo con los tableros). En cuentas Enterprise un administrador tiene que habilitarlo antes.",
+      "modulos": ["Mapas de procesos y embudos"]
+    },
+    {
+      "id": "apify",
+      "nombre": "Apify (MCP)",
+      "tipo": "mcp",
+      "obligatorio": true,
+      "url": "https://mcp.apify.com",
+      "prueba": "Buscar actores o ver los detalles de uno.",
+      "conectar": "Agregá https://mcp.apify.com como conector o servidor MCP remoto e iniciá sesión con tu cuenta de Apify.",
+      "modulos": ["Radar", "Ciudad (miniaturas)"]
+    },
+    {
+      "id": "higgsfield",
+      "nombre": "Higgsfield (MCP)",
+      "tipo": "mcp",
+      "obligatorio": true,
+      "url": "https://mcp.higgsfield.ai/mcp",
+      "prueba": "Una herramienta de consulta (cuenta, saldo de créditos o modelos disponibles).",
+      "conectar": "Agregá https://mcp.higgsfield.ai/mcp como conector o servidor MCP remoto e iniciá sesión con tu cuenta de Higgsfield (gasta tus créditos).",
+      "modulos": ["Contenido (portadas e imágenes)", "Generador de carruseles"]
+    },
+    {
+      "id": "mcp-supabase",
+      "nombre": "Supabase (MCP, alternativa a la CLI)",
+      "tipo": "mcp",
+      "obligatorio": false,
+      "url": "https://mcp.supabase.com/mcp",
+      "prueba": "Listar proyectos.",
+      "conectar": "Agregá https://mcp.supabase.com/mcp como conector o servidor MCP remoto e iniciá sesión. Solo hace falta si no usás la Supabase CLI.",
+      "modulos": ["Base de datos", "Migraciones"]
+    },
+
+    { "id": "env-supabase-url", "nombre": "NEXT_PUBLIC_SUPABASE_URL", "tipo": "clave", "variable": "NEXT_PUBLIC_SUPABASE_URL", "alternativas": ["SUPABASE_URL"], "obligatorio": true, "conectar": "Supabase → Project Settings → API → Project URL.", "modulos": ["Base"] },
+    { "id": "env-supabase-anon", "nombre": "NEXT_PUBLIC_SUPABASE_ANON_KEY", "tipo": "clave", "variable": "NEXT_PUBLIC_SUPABASE_ANON_KEY", "obligatorio": true, "conectar": "Supabase → Project Settings → API → anon public.", "modulos": ["Base"] },
+    { "id": "env-supabase-service", "nombre": "SUPABASE_SERVICE_ROLE_KEY", "tipo": "clave", "variable": "SUPABASE_SERVICE_ROLE_KEY", "obligatorio": true, "conectar": "Supabase → Project Settings → API → service_role (solo servidor, nunca NEXT_PUBLIC).", "modulos": ["Base"] },
+    { "id": "env-supabase-ref", "nombre": "SUPABASE_PROJECT_REF", "tipo": "clave", "variable": "SUPABASE_PROJECT_REF", "obligatorio": true, "conectar": "El ref del proyecto (lo que va antes de .supabase.co). Los crons de sincronización lo exigen.", "modulos": ["Base", "Crons"] },
+    { "id": "env-cron", "nombre": "CRON_SECRET", "tipo": "clave", "variable": "CRON_SECRET", "obligatorio": true, "conectar": "Cadena larga al azar: node scripts/instalar.mjs --generar-secretos.", "modulos": ["Base", "Crons"] },
+    { "id": "env-app-url", "nombre": "NEXT_PUBLIC_APP_URL", "tipo": "clave", "variable": "NEXT_PUBLIC_APP_URL", "obligatorio": true, "conectar": "http://localhost:3000 en tu compu; la URL final en Vercel.", "modulos": ["Base", "Crons"] },
+
+    { "id": "cfg-brand", "nombre": "NEXT_PUBLIC_BRAND_NAME", "tipo": "clave", "variable": "NEXT_PUBLIC_BRAND_NAME", "obligatorio": false, "conectar": "El nombre del negocio.", "modulos": ["Configuración del negocio"] },
+    { "id": "cfg-ig", "nombre": "NEXT_PUBLIC_BRAND_IG_HANDLE", "tipo": "clave", "variable": "NEXT_PUBLIC_BRAND_IG_HANDLE", "obligatorio": false, "conectar": "Usuario de Instagram propio, sin @.", "modulos": ["Configuración del negocio"] },
+    { "id": "cfg-ceo", "nombre": "NEXT_PUBLIC_CRM_CEO", "tipo": "clave", "variable": "NEXT_PUBLIC_CRM_CEO", "obligatorio": false, "conectar": "Primer nombre del dueño o la dueña.", "modulos": ["Configuración del negocio"] },
+    { "id": "cfg-closers", "nombre": "NEXT_PUBLIC_CRM_CLOSERS", "tipo": "clave", "variable": "NEXT_PUBLIC_CRM_CLOSERS", "obligatorio": false, "conectar": "Closers separados por coma.", "modulos": ["Configuración del negocio"] },
+    { "id": "cfg-setters", "nombre": "NEXT_PUBLIC_CRM_SETTERS", "tipo": "clave", "variable": "NEXT_PUBLIC_CRM_SETTERS", "obligatorio": false, "conectar": "Setters separados por coma.", "modulos": ["Configuración del negocio"] },
+    { "id": "cfg-precio", "nombre": "NEXT_PUBLIC_PRECIO_BASE", "tipo": "clave", "variable": "NEXT_PUBLIC_PRECIO_BASE", "alternativas": ["NEXT_PUBLIC_CRM_PROGRAMAS"], "obligatorio": false, "conectar": "Precio del programa en USD (pago único) o el catálogo completo en NEXT_PUBLIC_CRM_PROGRAMAS.", "modulos": ["Configuración del negocio"] },
+    { "id": "cfg-meta", "nombre": "NEXT_PUBLIC_META_CASH_MENSUAL", "tipo": "clave", "variable": "NEXT_PUBLIC_META_CASH_MENSUAL", "obligatorio": false, "conectar": "Meta mensual de cash collected en USD (también define los escalones de comisión).", "modulos": ["Configuración del negocio"] },
+
+    { "id": "env-anthropic", "nombre": "ANTHROPIC_API_KEY", "tipo": "clave", "variable": "ANTHROPIC_API_KEY", "obligatorio": false, "conectar": "console.anthropic.com → API Keys.", "modulos": ["IA (asistente, guionista, setting, WhatsApp, Fathom, Radar)"] },
+    { "id": "env-groq", "nombre": "GROQ_API_KEY", "tipo": "clave", "variable": "GROQ_API_KEY", "alternativas": ["OPENAI_API_KEY"], "obligatorio": false, "conectar": "console.groq.com → API Keys (o una OPENAI_API_KEY).", "modulos": ["Radar (transcripción)"] },
+    { "id": "env-apify", "nombre": "APIFY_TOKEN", "tipo": "clave", "variable": "APIFY_TOKEN", "alternativas": ["APIFY_API_TOKEN"], "obligatorio": false, "conectar": "console.apify.com → Settings → API & Integrations.", "modulos": ["Radar"] },
+    { "id": "env-meta-ads-token", "nombre": "META_ADS_ACCESS_TOKEN", "tipo": "clave", "variable": "META_ADS_ACCESS_TOKEN", "obligatorio": false, "conectar": "Token de usuario de sistema de Meta con ads_read.", "modulos": ["Meta Ads (inversión y públicos)"] },
+    { "id": "env-meta-ads-cuenta", "nombre": "META_ADS_ACCOUNT_ID", "tipo": "clave", "variable": "META_ADS_ACCOUNT_ID", "obligatorio": false, "conectar": "La cuenta publicitaria (act_…).", "modulos": ["Meta Ads (inversión y públicos)"] },
+    { "id": "env-meta-capi", "nombre": "META_CAPI_ACCESS_TOKEN", "tipo": "clave", "variable": "META_CAPI_ACCESS_TOKEN", "obligatorio": false, "conectar": "Token de la API de conversiones del píxel.", "modulos": ["Meta CAPI (leads calificados)"] },
+    { "id": "env-meta-dataset", "nombre": "META_CAPI_DATASET_ID", "tipo": "clave", "variable": "META_CAPI_DATASET_ID", "obligatorio": false, "conectar": "Id del píxel o dataset de Meta.", "modulos": ["Meta CAPI (leads calificados)"] },
+    { "id": "env-meta-publico", "nombre": "META_HAMMER_AUDIENCE_ID", "tipo": "clave", "variable": "META_HAMMER_AUDIENCE_ID", "obligatorio": false, "conectar": "Id de un público personalizado de Meta.", "modulos": ["Meta Ads (inversión y públicos)"] },
+    { "id": "env-ig-token", "nombre": "IG_INSIGHTS_TOKEN", "tipo": "clave", "variable": "IG_INSIGHTS_TOKEN", "obligatorio": false, "conectar": "Token con instagram_basic e instagram_manage_insights (docs/integraciones.md).", "modulos": ["Instagram propio (Radar, Ángulos, Ciudad)"] },
+    { "id": "env-ig-user", "nombre": "IG_USER_ID", "tipo": "clave", "variable": "IG_USER_ID", "obligatorio": false, "conectar": "Id de la cuenta profesional de Instagram.", "modulos": ["Instagram propio (Radar, Ángulos, Ciudad)"] },
+    { "id": "env-iclosed", "nombre": "ICLOSED_API_KEY", "tipo": "clave", "variable": "ICLOSED_API_KEY", "obligatorio": false, "conectar": "iClosed → Integraciones → API.", "modulos": ["iClosed (agendas)"] },
+    { "id": "env-manychat", "nombre": "MANYCHAT_API_KEY", "tipo": "clave", "variable": "MANYCHAT_API_KEY", "obligatorio": false, "conectar": "ManyChat → Settings → API.", "modulos": ["ManyChat (contactos y ángulos)"] },
+    { "id": "env-fathom", "nombre": "FATHOM_API_KEY", "tipo": "clave", "variable": "FATHOM_API_KEY", "obligatorio": false, "conectar": "Fathom → Settings → API Access.", "modulos": ["Fathom (llamadas)"] },
+    { "id": "env-google-sa", "nombre": "GOOGLE_SERVICE_ACCOUNT_JSON", "tipo": "clave", "variable": "GOOGLE_SERVICE_ACCOUNT_JSON", "obligatorio": false, "conectar": "JSON de una cuenta de servicio de Google Cloud, en base64.", "modulos": ["Google Sheets (espejo)"] },
+    { "id": "env-google-sheet", "nombre": "GOOGLE_SHEET_ID", "tipo": "clave", "variable": "GOOGLE_SHEET_ID", "obligatorio": false, "conectar": "Id de la planilla (compartida con la cuenta de servicio).", "modulos": ["Google Sheets (espejo)"] },
+    { "id": "env-youtube-key", "nombre": "YOUTUBE_API_KEY", "tipo": "clave", "variable": "YOUTUBE_API_KEY", "obligatorio": false, "conectar": "Google Cloud → YouTube Data API v3 → credenciales.", "modulos": ["YouTube"] },
+    { "id": "env-youtube-canal", "nombre": "YOUTUBE_CHANNEL_ID", "tipo": "clave", "variable": "YOUTUBE_CHANNEL_ID", "obligatorio": false, "conectar": "Id del canal (UC…).", "modulos": ["YouTube"] },
+    { "id": "env-mercury", "nombre": "MERCURY_API_TOKEN", "tipo": "clave", "variable": "MERCURY_API_TOKEN", "obligatorio": false, "conectar": "Mercury → Settings → API tokens (solo lectura).", "modulos": ["Mercury (finanzas)"] },
+    { "id": "env-vapid-publica", "nombre": "NEXT_PUBLIC_VAPID_PUBLIC_KEY", "tipo": "clave", "variable": "NEXT_PUBLIC_VAPID_PUBLIC_KEY", "obligatorio": false, "conectar": "Se genera: node scripts/instalar.mjs --generar-secretos.", "modulos": ["Avisos push"] },
+    { "id": "env-vapid-privada", "nombre": "VAPID_PRIVATE_KEY", "tipo": "clave", "variable": "VAPID_PRIVATE_KEY", "obligatorio": false, "conectar": "Se genera: node scripts/instalar.mjs --generar-secretos.", "modulos": ["Avisos push"] },
+    { "id": "env-ingest", "nombre": "CRM_INGEST_KEY", "tipo": "clave", "variable": "CRM_INGEST_KEY", "obligatorio": false, "conectar": "Cadena al azar: node scripts/instalar.mjs --generar-secretos.", "modulos": ["Cargas externas (ingest, WhatsApp)"] }
+  ]
+}

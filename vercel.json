@@ -1,0 +1,96 @@
+{
+  "crons": [
+    {
+      "path": "/api/lead-scoring-sync",
+      "schedule": "*/15 * * * *"
+    },
+    {
+      "path": "/api/sheet-sync",
+      "schedule": "*/5 * * * *"
+    },
+    {
+      "path": "/api/sheet-pull",
+      "schedule": "*/10 * * * *"
+    },
+    {
+      "path": "/api/fathom-sync",
+      "schedule": "*/30 * * * *"
+    },
+    {
+      "path": "/api/fathom-show-reconcile",
+      "schedule": "15 */2 * * *"
+    },
+    {
+      "path": "/api/iclosed-sync",
+      "schedule": "*/10 * * * *"
+    },
+    {
+      "path": "/api/manychat-sync",
+      "schedule": "0 */6 * * *"
+    },
+    {
+      "path": "/api/operations-refresh",
+      "schedule": "5 * * * *"
+    },
+    {
+      "path": "/api/cron-diario",
+      "schedule": "0 9 * * *"
+    },
+    {
+      "path": "/api/youtube-sync",
+      "schedule": "30 8 * * *"
+    },
+    {
+      "path": "/api/radar-sync?paso=ciclo",
+      "schedule": "*/10 * * * *"
+    },
+    {
+      "path": "/api/radar-sync?paso=historias",
+      "schedule": "0 21 * * *"
+    },
+    {
+      "path": "/api/radar-sync?paso=propias",
+      "schedule": "15 */6 * * *"
+    },
+    {
+      "path": "/api/radar-sync?paso=piezas",
+      "schedule": "0 11 * * *"
+    },
+    {
+      "path": "/api/radar-sync?paso=perfiles",
+      "schedule": "0 10 * * 1"
+    },
+    {
+      "path": "/api/radar-sync?paso=comentarios",
+      "schedule": "30 11 * * 1"
+    },
+    {
+      "path": "/api/radar-sync?paso=minar",
+      "schedule": "30 13 * * 1"
+    },
+    {
+      "path": "/api/radar-sync?paso=podar",
+      "schedule": "0 7 * * 0"
+    },
+    {
+      "path": "/api/radar-sync?paso=historias&turno=2",
+      "schedule": "0 1 * * *"
+    },
+    {
+      "path": "/api/radar-sync?paso=seguidores",
+      "schedule": "5 3 * * *"
+    },
+    {
+      "path": "/api/radar-sync?paso=vincular",
+      "schedule": "40 13,23 * * *"
+    },
+    {
+      "path": "/api/radar-sync?paso=metricas",
+      "schedule": "25 */6 * * *"
+    },
+    {
+      "path": "/api/ventas-diario",
+      "schedule": "0 1 * * *"
+    }
+  ]
+}
